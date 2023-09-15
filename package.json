@@ -4,10 +4,11 @@
   "description": "trying out authentication in node.   token based",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Usman Abdulsalam",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

@@ -7,7 +7,7 @@ const db = require('./dbConnection')
 const app = express()
 const port = process.env.PORT
 
-//db.connnectToDb()
+db.connnectToDb()
 
 const headSetter = (req, res, next) => {
     res.setHeader('Content-Type', 'application/json')
