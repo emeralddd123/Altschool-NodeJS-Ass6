@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 
 const db = require('./dbConnection')
+const authRouter = require('./auth/auth.routes')
+const authMid = require('./auth/auth.middlewares')
 
 const app = express()
 const port = process.env.PORT
@@ -19,7 +21,11 @@ const headSetter = (req, res, next) => {
 app.use(headSetter)
 app.use(bodyParser.json())
 
+app.use('auth/', authRouter)
+
 app.get('/', (req, res) => res.send('Hello World!'))
+
+//app.use(authMid)
 
 
 
