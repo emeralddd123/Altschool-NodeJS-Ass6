@@ -28,9 +28,13 @@ const ProductSchema = new Schema({
         type: String,
         unique: true
     },
+    modifiedAt: {
+        type:Date,
+        default:Date.now()
+    },
     createdAt: {
         type:Date,
-        default:Date.now
+        default:Date.now()
     }
 })
 

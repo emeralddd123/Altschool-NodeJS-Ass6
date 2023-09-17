@@ -23,15 +23,15 @@ const headSetter = (req, res, next) => {
 app.use(headSetter)
 app.use(bodyParser.json())
 
+app.get('/', (req, res) => res.send("Welcome To Product Store"))
+
 app.use('/auth', authRouter)
 
 app.use('/user', userRouter)
 
-
-
 app.use(authenticate)
 app.use('/product', productRouter)
-app.get('/', (req, res) => res.json(req.user))
+
 
 
 app.get("*", (req, res) => {
