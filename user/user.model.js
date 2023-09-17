@@ -1,13 +1,16 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const bcrypt = require('bcrypt')
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     username: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     email: {
         type: String,
@@ -17,14 +20,15 @@ const UserSchema = new Schema({
     },
     phoneNumber: {
         type: String,
-        unique: true,
-        required: true
+        unique: true
     },
     createdAt: Date
 });
 
 
+
 UserSchema.pre('save', async function (next) {
+
     const hashedpassword = await bcrypt.hash(this.password, 10);
     this.password = hashedpassword;
     next();
@@ -33,11 +37,10 @@ UserSchema.pre('save', async function (next) {
 UserSchema.methods.isValidPassword = async function (password) {
     const user = this;
     const compare = await bcrypt.compare(password, user.password);
-
     return compare;
-}
+  }
 
 const UserModel = mongoose.model("User", UserSchema);
 
 
-module.export = { UserModel };
+module.exports = { UserModel };
