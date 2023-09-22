@@ -51,13 +51,15 @@ authRouter.post('/login', async (req, res) => {
 
 authRouter.post('/token-refresh', (req, res) => {
 	try {
-		const {error, value} = tokenSchema.validate(req.body)
-		if (error){
-			return res.status(400).json({ error: error.details[0] })
+		const validBody = tokenSchema.validate(req.body)
+		if (validBody.error) {
+			return res.status(400).json({ error: validBody.error.details[0] })
 		}
-		
+		const decodedRefreshToken = jwt.verify(validBody.refresh_token, process.env.REFRESH_SECRET_KEY)
+
 	} catch (error) {
-		
+		// write some code to put 
+		return res.json({ error })
 	}
 
 })
