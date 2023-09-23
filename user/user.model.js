@@ -21,6 +21,10 @@ const UserSchema = new Schema({
     phoneNumber: {
         type: String,
         unique: true
+    },role: {
+        type: String,
+        enum: ['admin', 'user'],
+        default: 'user'
     },
     createdAt: Date
 });
@@ -39,6 +43,14 @@ UserSchema.methods.isValidPassword = async function (password) {
     const compare = await bcrypt.compare(password, user.password);
     return compare;
   }
+
+UserSchema.methods.isAdmin = async function() {
+    const user = this
+    if (user.role == 'admin'){
+        return true
+    }
+    return false
+}
 
 const UserModel = mongoose.model("User", UserSchema);
 
