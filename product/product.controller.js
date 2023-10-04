@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const ProductModel = require('./product.model')
+const Product = require('../models/product')
 
 const productSchema = Joi.object({
     name: Joi.string().min(3).max(100).required(),
@@ -30,7 +30,7 @@ const addProduct = async (req, res) => {
         return res.status(400).json({ "message": "failed", "data": null, "error": error.details[0].message })
     }
     try {
-        const product = await ProductModel.create({
+        const product = await Product.create({
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
@@ -55,12 +55,12 @@ const getAllProduct = async (req, res) => {
         console.log('inside getaall cont')
         const skip = (page - 1) * limit;
 
-        const products = await ProductModel.find()
+        const products = await Product.find()
             .skip(skip)
             .limit(limit)
             .exec();
 
-        const totalProducts = await ProductModel.countDocuments();
+        const totalProducts = await Product.countDocuments();
 
         return res.json({
             products: products,
@@ -78,7 +78,7 @@ const getAllProduct = async (req, res) => {
 const getProduct = async (req, res) => {
     const id = req.params.id
     try {
-        const product = await ProductModel.findById(id)
+        const product = await Product.findById(id)
         if (!product) {
             return res.status(404).json({ "message": "failed", "data": null, "error": "Product not found" })
         }
@@ -96,7 +96,7 @@ const updateProduct = async (req, res) => {
         return res.status(400).json({ "message": "failed", "data": null, "error": validBody.error.details[0].message })
     }
     try {
-        const existingProduct = await ProductModel.findById(id);
+        const existingProduct = await Product.findById(id);
 
         if (existingProduct) {
             if (validBody.name) existingProduct.name = validBody.name;
@@ -124,7 +124,7 @@ const deleteProduct = async (req, res) => {
     const id = req.params.id
 
     try {
-        await ProductModel.deleteOne({ id: id })
+        await Product.deleteOne({ id: id })
         return res.status(200).json({ "message": "product deleted successfully" })
     } catch (error) {
         console.log(error)

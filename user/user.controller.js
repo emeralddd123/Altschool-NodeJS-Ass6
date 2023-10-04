@@ -1,15 +1,19 @@
-const { UserModel } = require('./user.model')
+const { where } = require('sequelize');
+const { User } = require('../models/user')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-
+const bcrypt = require('bcrypt')
 
 
 
 const signup = async (req, res) => {
     try {
-        const existingEmail = await UserModel.findOne({ email: req.body.email });
-        const existingUsername = await UserModel.findOne({ username: req.body.username });
-        const existingNumber = await UserModel.findOne({ phoneNumber: req.body.phoneNumber });
+        const { email, username, phoneNumber, password } = req.body;
+
+
+        const existingEmail = await User.findOne({ where: { email } });
+        const existingUsername = await User.findOne({ where: { username } });
+        const existingNumber = await User.findOne({ where: { phoneNumber } });
 
         if (existingEmail) {
             return res.status(409).json({ error: "Email already exists" });
@@ -23,11 +27,14 @@ const signup = async (req, res) => {
             return res.status(409).json({ error: "Phone number already exists" });
         }
 
-        const newUser = await UserModel.create({
-            email: req.body.email,
-            username: req.body.username,
-            phoneNumber: req.body.phoneNumber,
-            password: req.body.password,
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create a new user
+        const newUser = await User.create({
+            email,
+            username,
+            phoneNumber,
+            password: hashedPassword,
         });
 
         delete newUser.password;
@@ -36,7 +43,7 @@ const signup = async (req, res) => {
             expiresIn: '1h',
         });
 
-        return res.status(201).json({ message: 'success', value: token });
+        return res.status(201).json({ message: 'success', access_token: token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });

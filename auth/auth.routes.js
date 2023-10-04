@@ -2,7 +2,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Joi = require('joi')
-const { UserModel } = require('../user/user.model')
+const { User } = require('../models/user')
 
 
 const userLoginSchema = Joi.object({
@@ -23,23 +23,24 @@ authRouter.post('/login', async (req, res) => {
 		if (error) {
 			return res.status(400).json({ error: error.details[0] });
 		}
+		const { username, password } = req.body
 
-		const userWithName = await UserModel.findOne({ username: req.body.username });
+		const userWithName = await User.findOne({ where: { username: username } });
 
 		if (!userWithName) {
 			return res.status(401).json({ error: "Incorrect login credentials" });
 		}
 
-		const isValidPassword = await userWithName.isValidPassword(req.body.password);
-
+		const isValidPassword = await userWithName.isValidPassword(password);
+		
 		if (!isValidPassword) {
 			return res.status(401).json({ error: "Incorrect login credentials" });
 		} else {
-			const userWithoutPassword = { ...userWithName._doc };
-			delete userWithoutPassword.password;
-
-			const token = jwt.sign({ user: userWithoutPassword }, process.env.SECRET_KEY, { expiresIn: '1h' });
-
+			const userData =  { ...userWithName.dataValues };
+			delete userData['password']
+			
+			const token = jwt.sign({ user: userData }, process.env.SECRET_KEY, { expiresIn: '1h' });
+			
 			return res.status(201).json({ message: 'Success', token });
 		}
 	} catch (error) {

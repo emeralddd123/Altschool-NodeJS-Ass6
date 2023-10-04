@@ -32,6 +32,9 @@ app.use('/user', userRouter)
 app.use(authenticate)
 app.use('/product', productRouter)
 
+app.get('/me', (req, res) => {
+    return res.status(200).json({ message: 'success', user: req.user });
+})
 
 
 app.get("*", (req, res) => {
