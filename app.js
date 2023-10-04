@@ -3,10 +3,11 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 
 const db = require('./dbConnection')
-const { authRouter } = require('./auth/auth.routes')
-const { userRouter } = require('./user/user.routes')
+const authRouter = require('./auth/auth.routes')
+const userRouter = require('./user/user.routes')
 const { authenticate } = require('./auth/auth.middlewares')
 const productRouter = require('./product/product.routes')
+const categoryRouter = require('./product/category.routes')
 
 const app = express()
 const port = process.env.PORT
@@ -15,7 +16,7 @@ db.connnectToDb()
 
 const headSetter = (req, res, next) => {
     res.setHeader('Content-Type', 'application/json')
-    res.setHeader('Access-Control-Allow-Origin', '*')  //The CORS should be modified to the requirement
+    res.setHeader('Access-Control-Allow-Origin', '*')  //unsafe
 
     next()
 }
@@ -31,6 +32,7 @@ app.use('/user', userRouter)
 
 app.use(authenticate)
 app.use('/product', productRouter)
+app.use('/category', categoryRouter)
 
 app.get('/me', (req, res) => {
     return res.status(200).json({ message: 'success', user: req.user });

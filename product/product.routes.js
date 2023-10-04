@@ -11,3 +11,4 @@ productRouter.put('/:id', updateProduct)
 productRouter.delete('/:id', deleteProduct)
 
 module.exports = productRouter
+

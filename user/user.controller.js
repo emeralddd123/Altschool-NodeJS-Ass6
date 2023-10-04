@@ -37,7 +37,8 @@ const signup = async (req, res) => {
             password: hashedPassword,
         });
 
-        delete newUser.password;
+        const userData = { ...newUser.dataValues };
+        delete userData['password']
 
         const token = jwt.sign({ user: newUser }, process.env.SECRET_KEY, {
             expiresIn: '1h',

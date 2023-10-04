@@ -5,4 +5,4 @@ const userRouter = express.Router()
 
 userRouter.post('/signup',validUserCreation, signup)
 
-module.exports = { userRouter } 
+module.exports = userRouter 
