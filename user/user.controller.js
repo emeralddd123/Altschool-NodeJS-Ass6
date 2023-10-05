@@ -38,13 +38,14 @@ const signup = async (req, res) => {
         });
 
         const userData = { ...newUser.dataValues };
-        delete userData['password']
+        delete userData['password'];
+        delete userData['createdAt'];
+        delete userData['updatedAt'];
 
-        const token = jwt.sign({ user: newUser }, process.env.SECRET_KEY, {
-            expiresIn: '1h',
-        });
+        const access_token = jwt.sign({ user: newUser }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        // const refresh_token = jwt.sign({ user: userData }, process.env.REFRESH_SECRET_KEY, { expiresIn: '24h' })
 
-        return res.status(201).json({ message: 'success', access_token: token });
+        return res.status(201).json({ message: 'Success', data: { access_token }, error: null });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });

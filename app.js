@@ -35,7 +35,7 @@ app.use('/product', productRouter)
 app.use('/category', categoryRouter)
 
 app.get('/me', (req, res) => {
-    return res.status(200).json({ message: 'success', user: req.user });
+    return res.status(200).json({ message: 'success', data:{user: req.user}, error:null });
 })
 
 

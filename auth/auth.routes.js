@@ -32,16 +32,18 @@ authRouter.post('/login', async (req, res) => {
 		}
 
 		const isValidPassword = await userWithName.isValidPassword(password);
-		
+
 		if (!isValidPassword) {
 			return res.status(401).json({ error: "Incorrect login credentials" });
 		} else {
-			const userData =  { ...userWithName.dataValues };
-			delete userData['password']
-			
-			const token = jwt.sign({ user: userData }, process.env.SECRET_KEY, { expiresIn: '1h' });
-			
-			return res.status(201).json({ message: 'Success', token });
+			const userData = { ...userWithName.dataValues };
+			delete userData['password'];
+			delete userData['createdAt'];
+			delete userData['updatedAt'];
+
+			const access_token = jwt.sign({ user: userData }, process.env.SECRET_KEY, { expiresIn: '1h' });
+			// const refresh_token = jwt.sign({ user: userData }, process.env.REFRESH_SECRET_KEY, { expiresIn: '24h' })
+			return res.status(201).json({ message: 'Success', data: { access_token }, error: null });
 		}
 	} catch (error) {
 		console.error(error);
@@ -50,17 +52,26 @@ authRouter.post('/login', async (req, res) => {
 });
 
 
-authRouter.post('/token-refresh', (req, res) => {
+authRouter.post('/token-refresh', async (req, res) => {
 	try {
-		const validBody = tokenSchema.validate(req.body)
-		if (validBody.error) {
-			return res.status(400).json({ error: validBody.error.details[0] })
-		}
-		const decodedRefreshToken = jwt.verify(validBody.refresh_token, process.env.REFRESH_SECRET_KEY)
+		// const { error, valid } = tokenSchema.validate(req.body)
+		// if (error) {
+		// 	return res.status(400).json({ error: error.details[0] })
+		// }
+		// const { refresh_token } = req.body
+		// const decodedRefreshToken = await jwt.verify(refresh_token, process.env.REFRESH_SECRET_KEY)
+		// const userId = decodedRefreshToken.user.id
+		// const user = await User.findByPk(userId)
 
+		// const userData = { ...user.dataValues }
+		// delete userData['password', 'createdAt', 'modifiedAt']
+
+		// const access_token = jwt.sign({ user: userData }, process.env.SECRET_KEY, { expiresIn: '1h' })
+		// return res.status(201).json({ message: 'Success', data: { access_token }, error: null });
+		return res.json({ message: `Incoming feature`, data: null, error: null })
 	} catch (error) {
 		// write some code to put 
-		return res.json({ error })
+		return res.status(100).json({ error })
 	}
 
 })

@@ -173,7 +173,7 @@ const getAllCategory = async (req, res) => {
 
         const categorys = await Category.findAndCountAll({ limit: limit, offset: skip })
 
-        return res.status(200).json(categorys);
+        return res.status(200).json({message:"success", data:{categorys}, error:null});
     } catch (error) {
         console.log(error)
         return res.status(500).json({ "error": "Internal Server Error" })
@@ -188,7 +188,7 @@ const getCategory = async (req, res) => {
         if (!category) {
             return res.status(404).json({ "message": "failed", "data": null, "error": "Category not found" })
         }
-        return res.status(200).json({ "message": "succes", "data": category, "error": null })
+        return res.status(200).json({ "message": "succes", "data": {category}, "error": null })
     } catch (error) {
         console.log(error)
         return res.status(500).json({ "message": "failed", "error": "Internal Server Error" })
