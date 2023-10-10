@@ -19,9 +19,10 @@ Node-AuthSystem is a store API that utilizes JWT tokens for authentication and a
 Follow these steps to set up the project:
 
 1. Run `npm install` to install all the required dependencies.
-2. Create a `.env` file and add the necessary variables. You can use `.env.sample` as a guide.
-3. Start the server by running either `npm start` or `node app.js`.
-4. Seed users into the database by running `npx sequelize-cli db:seed --seed seeders/seed-users`. Repeat this process for products and categories.
+2. Enter the corrrect details for your Mysql DB in the config/config.json.
+3. Create a `.env` file and add the necessary variables. You can use `.env.sample` as a guide.
+4. Start the server by running either `npm start` or `node app.js`.
+5. Seed users into the database by running `npx sequelize-cli db:seed --seed seeders/seed-users`. Repeat this process for products and categories.
 
 ## Testing the Project
 
