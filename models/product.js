@@ -47,8 +47,9 @@ const Product = sequelize.define("product", {
         type: DataTypes.STRING,
         unique: true,
         set(name) {
-            this.setDataValue("sku", generateSKU(name));
-        },
+            const generatedSKU = generateSKU(name);
+        this.setDataValue('sku', generatedSKU);
+        }
     },
 });
 

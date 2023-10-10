@@ -27,14 +27,13 @@ const signup = async (req, res) => {
             return res.status(409).json({ error: "Phone number already exists" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user
         const newUser = await User.create({
-            email,
-            username,
-            phoneNumber,
-            password: hashedPassword,
+            email: email,
+            username: username,
+            phoneNumber: phoneNumber,
+            password: password,
         });
 
         const userData = { ...newUser.dataValues };

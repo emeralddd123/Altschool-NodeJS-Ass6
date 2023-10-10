@@ -5,7 +5,7 @@ require('dotenv').config()
 const authenticate = (req, res, next) => {
     // some code to check for user authentication
     const authToken = req.headers.authorization
-    if (!authToken){
+    if (!authToken) {
         return res.status(401).json("Authentication Credentials not provided")
     }
     if (authToken.split(' ')[0] !== "Bearer" || !authToken.split(' ')[1]) {
@@ -24,5 +24,17 @@ const authenticate = (req, res, next) => {
     next()
 }
 
+const isAdmin = (req, res, next) => {
+    try {
+        const adminn = req.user.role
+        if (adminn !== "admin") {
+            return res.status(403).json({ data: null, message: "Only Admin Can carry out this action", error: null })
+        } 
+    } catch (error) {
+        return res.json({ error })
+    }
+    next()
+    
+}
 
-module.exports = { authenticate }
+module.exports = { authenticate, isAdmin }

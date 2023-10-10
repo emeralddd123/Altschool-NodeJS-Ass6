@@ -1,8 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/sequelize")
+const bcrypt = require("bcrypt")
 
-
-const bcrypt = require('bcrypt')
 
 const User = sequelize.define('user', {
     id: {
@@ -18,7 +17,6 @@ const User = sequelize.define('user', {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-
     },
     email: {
         type: DataTypes.STRING,
@@ -36,7 +34,14 @@ const User = sequelize.define('user', {
     },
 });
 
-
+User.beforeCreate(async (user, option) => {
+    try {
+        const hash = await bcrypt.hash(user.password, 10);
+        user.password = hash;
+    } catch (err) {
+        throw new Error();
+    }
+});
 
 User.prototype.isValidPassword = async function (password) {
     const user = this;
