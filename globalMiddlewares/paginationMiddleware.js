@@ -8,7 +8,6 @@ const paginationMiddleware = (pageSize) => {
                 page: page,
                 limit: limit
             };
-            console.log('inside page middlware')
             next();
         } catch (error) {
             next(error);

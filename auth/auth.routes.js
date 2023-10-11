@@ -35,10 +35,12 @@ authRouter.post('/login', async (req, res) => {
 		if (!isValidPassword) {
 			return res.status(401).json({ error: "Incorrect login credentials" });
 		} else {
-			const userWithoutPassword = { ...userWithName._doc };
-			delete userWithoutPassword.password;
+			const userData = { ...userWithName._doc };
+			delete userData['password'];
+			delete userData['createdAt'];
+			delete userData['updatedAt'];
 
-			const token = jwt.sign({ user: userWithoutPassword }, process.env.SECRET_KEY, { expiresIn: '1h' });
+			const token = jwt.sign({ user: userData }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
 			return res.status(201).json({ message: 'Success', token });
 		}
@@ -52,10 +54,11 @@ authRouter.post('/login', async (req, res) => {
 authRouter.post('/token-refresh', (req, res) => {
 	try {
 		const validBody = tokenSchema.validate(req.body)
-		if (validBody.error) {
-			return res.status(400).json({ error: validBody.error.details[0] })
-		}
-		const decodedRefreshToken = jwt.verify(validBody.refresh_token, process.env.REFRESH_SECRET_KEY)
+		// if (validBody.error) {
+		// 	return res.status(400).json({ error: validBody.error.details[0] })
+		// }
+		// const decodedRefreshToken = jwt.verify(validBody.refresh_token, process.env.REFRESH_SECRET_KEY)
+		return res.json({message:"Feature Incoming!!!!", data:null, error:null})
 
 	} catch (error) {
 		// write some code to put 

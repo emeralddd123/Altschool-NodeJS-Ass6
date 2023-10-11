@@ -25,11 +25,11 @@ const updateProductSchema = Joi.object({
 
 
 const addProduct = async (req, res) => {
-    const validBody = productSchema.validate(req.body)
-    if (validBody.error) {
-        return res.status(400).json({ "message": "failed", "data": null, "error": error.details[0].message })
-    }
     try {
+        const { error, value } = productSchema.validate(req.body)
+        if (error) {
+            return res.status(400).json({ "message": "failed", "data": null, "error": error.details[0].message })
+        }
         const product = await ProductModel.create({
             name: req.body.name,
             description: req.body.description,
@@ -52,7 +52,6 @@ const getAllProduct = async (req, res) => {
     try {
         const page = req.pagination.page;
         const limit = req.pagination.limit;
-        console.log('inside getaall cont')
         const skip = (page - 1) * limit;
 
         const products = await ProductModel.find()
@@ -93,7 +92,7 @@ const updateProduct = async (req, res) => {
     const id = req.params.id
     const validBody = updateProductSchema.validate(req.body)
     if (validBody.error) {
-        return res.status(400).json({ "message": "failed", "data": null, "error": validBody.error.details[0].message })
+        return res.status(400).json({ message: "failed", data: null, error: validBody.error.details[0].message })
     }
     try {
         const existingProduct = await ProductModel.findById(id);
@@ -112,7 +111,7 @@ const updateProduct = async (req, res) => {
 
             return res.json({ "data": existingProduct });
         } else {
-            return res.status(404).json(`Product with id ${id} does not exist.`);
+            return res.status(404).json({message:`Product with id ${id} does not exist.`, data:null, error:null});
         }
     } catch (error) {
         console.error(error);
@@ -124,8 +123,8 @@ const deleteProduct = async (req, res) => {
     const id = req.params.id
 
     try {
-        await ProductModel.deleteOne({ id: id })
-        return res.status(200).json({ "message": "product deleted successfully" })
+        await ProductModel.findByIdAndDelete(id) //deleteOne({ id: id })
+        return res.status(200).json({message:`Product deleted Succesfully.`, data:null, error:null})
     } catch (error) {
         console.log(error)
         return res.status(500).json({ "error": "Internal Server Error" })

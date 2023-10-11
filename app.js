@@ -32,7 +32,9 @@ app.use('/user', userRouter)
 app.use(authenticate)
 app.use('/product', productRouter)
 
-
+app.get('/me', (req, res) => {
+    return res.status(200).json({ message: 'success', data:{user: req.user}, error:null });
+})
 
 app.get("*", (req, res) => {
     res.status(404).json({ "error": "Page not found" })

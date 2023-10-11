@@ -25,4 +25,17 @@ const authenticate = (req, res, next) => {
 }
 
 
-module.exports = { authenticate }
+const isAdmin = (req, res, next) => {
+    try {
+        const adminn = req.user.role
+        if (adminn !== "admin") {
+            return res.status(403).json({ data: null, message: "Only Admin Can carry out this action", error: null })
+        } 
+    } catch (error) {
+        return res.json({ error })
+    }
+    next()
+    
+}
+
+module.exports = { authenticate , isAdmin}
