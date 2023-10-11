@@ -25,7 +25,7 @@ Follow these steps to set up the project:
 
 ## Testing the Project
 
-You can test the project by using the provided Postman documentation. Clone the Postman collection and test all available endpoints. Access the Postman documentation [here].
+You can test the project by using the provided Postman documentation. Clone the Postman collection and test all available endpoints. Access the Postman documentation [here](https://documenter.getpostman.com/view/23280484/2s9YJjQySK).
 
 ## Limitations
 
