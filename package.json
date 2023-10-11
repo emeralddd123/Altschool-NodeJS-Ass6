@@ -1,0 +1,17 @@
+{
+  "name": "authsystem",
+  "version": "1.0.0",
+  "description": "Implemeting JWT Authentication and Authorization in ExpressJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ExpressJS",
+    "NodeJS",
+    "JavaScript",
+    "JWT"
+  ],
+  "author": "Usman Abdulsalam",
+  "license": "MIT"
+}
