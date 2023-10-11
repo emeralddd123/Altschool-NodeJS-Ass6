@@ -7,7 +7,8 @@ const productRouter = express.Router()
 
 productRouter.get('/', paginationMiddleware(15), getAllProduct)
 productRouter.get('/:id', getProduct)
-productRouter.post('/', isAdmin,addProduct)
+productRouter.use(isAdmin)
+productRouter.post('/', addProduct)
 productRouter.put('/:id', updateProduct)
 productRouter.delete('/:id', deleteProduct)
 
