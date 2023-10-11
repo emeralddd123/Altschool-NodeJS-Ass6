@@ -12,8 +12,7 @@ module.exports = {
           description: 'Description of Category 2',
           createdAt: new Date(),
           updatedAt: new Date(),
-        },
-        // Add more category objects as needed
+        }
       ]);
     },
   
